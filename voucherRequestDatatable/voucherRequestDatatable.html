@@ -1,0 +1,107 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <lightning-card
+        title="Voucher Request Datatable"
+        icon-name="custom:custom62"
+    >
+        <div class="slds-var-m-around_medium">
+            <template lwc:if={showButtonOrDataTable}>
+                <c-custom-data-types
+                    key-field="Id"
+                    data={data}
+                    columns={columns}
+                    onsave={handleSave}
+                    oncancel={handleCancel}
+                    draft-values={draftValues}
+                    oncellchange={handleCellChange}
+                    onlookupchanged={lookupChanged}
+                    onmultiplelookupchanged={multipleLookupChanged} 
+                    onvalueselect={handleSelection}
+                    suppress-bottom-bar="true"
+                    onrowselection={handleRowSelection}
+                >
+                </c-custom-data-types>
+                <template lwc:if={isHovered}>
+                    <div style="color: red; font-style: italic; text-align:center; display: block;">!Records awaiting approval are in a read-only state!</div>
+                </template>
+                <c-custom-data-types
+                    key-field="Id"
+                    data={pendingList}
+                    columns={columnsForApproval}
+                    suppress-bottom-bar="true"
+                    hide-table-header
+                    onmouseover={handleMouseOver}
+                    onmouseout={handleMouseOut}
+                    disabled="true"
+                >
+                </c-custom-data-types>              
+                <div class="slds-grid slds-wrap slds-align_absolute-center">
+                    <div class="slds-var-m-around_medium">
+                            <lightning-button   
+                                variant="destructive"
+                                label="Delete Records"
+                                title="Delete Records"
+                                onclick={deleteRecords} 
+                                slot="actions"
+                                icon-name="utility:delete"
+                                disabled={isDeleteButtonDisable}
+                            ></lightning-button>
+                    </div>
+                
+                    <div class="slds-var-m-around_medium">
+                        <lightning-button   
+                        variant="success"
+                        label="Save as Draft"
+                        title="Save as Draft"
+                        onclick={handleSave} 
+                        slot="actions"
+                        icon-name="utility:save">
+                        </lightning-button>
+                    </div>
+                    <div class="slds-var-m-around_medium">
+                        <lightning-button   
+                        variant="brand"
+                        label="Submit for Approval"
+                        title="Submit for Approval"
+                        onclick={submitForApprovalHandler} 
+                        slot="actions"
+                        icon-name="utility:enter">
+                        </lightning-button>
+                    </div>
+                    <div class="slds-var-m-around_medium">
+                        <lightning-button   
+                        variant="neutral"
+                        label="Add New"
+                        title="Add New"
+                        onclick={getSelectedRec} 
+                        slot="actions"
+                        icon-name="utility:add">
+                        </lightning-button>
+                    </div>
+                </div>
+            </template>
+            <template lwc:elseif={error}>
+                <c-error-panel errors={error}></c-error-panel>
+            </template>
+            <template if:false={showButtonOrDataTable}>
+                <div class="slds-var-m-around_medium">
+                    <lightning-button   
+                    variant="neutral"
+                    label="Add New"
+                    title="Add New"
+                    onclick={getSelectedRec} 
+                    slot="actions"
+                    icon-name="utility:add">
+                    </lightning-button>
+                </div>
+            </template> 
+        </div>
+    </lightning-card>
+    <template if:true={isCreateVoucherRequest}>
+        <lightning-card  variant="Narrow"  title="Create Voucher Request">
+          <div>
+            <c-add-new-create-voucher-request onclose={closeHandler}></c-add-new-create-voucher-request>
+          </div>     
+        </lightning-card>   
+    </template>
+</template>
