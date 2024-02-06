@@ -1,0 +1,25 @@
+<template>
+    <div class="slds-p-around_medium">
+        <lightning-button 
+            label="Mass Approval" 
+            onclick={handleMassApproval} 
+            variant="brand">
+        </lightning-button>
+        <lightning-button 
+            label="Mass Rejection" 
+            onclick={handleMassRejection} 
+            variant="destructive">
+        </lightning-button>
+
+        <div class="slds-p-around_medium">
+
+            <div if:true={isSuccess} class="slds-text-color_success ">
+                Operation is successful.
+            </div>
+
+            <div if:true={errorMessage} class="slds-text-color_error  ">
+                {errorMessage}
+            </div>
+        </div>
+    </div>
+</template>
